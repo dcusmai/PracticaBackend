@@ -1,5 +1,4 @@
-const express = require('express');
-const app = express(); // Este puede ser app o server por convención
+const app = require('./routes/index'); // Este archivo solo tiene la configuración del servidor. Lo único que hace es levantar el servidor
 
 
 
