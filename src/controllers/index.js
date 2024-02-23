@@ -14,6 +14,16 @@ const getUsersByName = (name) => {
     //usersFiltered ? usersFiltered : { error: `No hay usuarios con nombre: ${name}`} //otra forma con ternarios
 };
 
+const getUsersById = (id) => {
+    const userFound = users.find(user => user.id === Number(id)); 
+    
+    if(!userFound){
+        return{error:`El usuario con el ID "${id}" no existe.`}
+    }else{
+        return userFound;
+    }
+};
+
 let id = 1;
 const postUser = (name, email, username) => {
     const newUser = {
@@ -84,13 +94,63 @@ const postPosteos = (userId, title, contents) => {
     findUser.posts.push(newPost);
 
     return newPost;
-}
+};
+
+const getAllPosts = () => posteos;
+
+const getPostById = (id) => {
+    const postsFiltered = posteos.find((post) => post.id === Number(id));
+
+    if(!postsFiltered) return { error:`El Post con postID ${id} no existe.` };
+    else{
+        return postsFiltered;
+    }
+};
+
+const modifyPost = (id, title, contents) => {
+    const findPost = posteos.find(post => post.id == id);
+
+    if (!findPost) return 'No se encontró el Post a Modificar';
+    else{
+        findPost.title = title ? title : findPost.title;
+        findPost.contents = contents ? contents : findPost.contents;
+        return findPost;
+    }
+};
+
+const deletePost = (id) => {
+    const postToDelete = posteos.find(post => post.id === Number(id));
+
+    if(!postToDelete) return `El post con ID ${id} no existe.`;
+    else{
+        posteos = posteos.filter(post => post.id !== Number(id));
+        return `${postToDelete.title} eliminado exitosamente`;
+    }
+
+    // OTRA FORMA MÁS COMPLICADA PERO FUNCIONA:
+    // const indxPost = posteos.findIndex(post => post.id == id);
+    
+    // if(indxPost < 0 ) return `El Post con id "${id}" no existe`;
+    // else{
+    //     const delPost = posteos[indxPost];
+    //     const userPost = users.find(user => user.posts.includes(delPost));
+    //     userPost.posts = userPost.posts.filter(postId => postId !== delPost.id);
+        
+    //     posteos.splice(indxPost,1);
+    //     return `Se ha eliminado correctamente el Post con id "${id}"`;
+    // }
+};
 
 module.exports = {
     getAllUsers,
     getUsersByName,
+    getUsersById,
     postUser,
     updateUser,
     deleteUser,
-    postPosteos
+    postPosteos,
+    getAllPosts,
+    getPostById,
+    modifyPost,
+    deletePost
 }
